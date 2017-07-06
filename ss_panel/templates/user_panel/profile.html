@@ -1,0 +1,248 @@
+{% extends 'user_panel/user_panel_base.html' %}
+
+{% block bodybox %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            帐号信息
+            <small>User Profile</small>
+        </h1>
+    </section>
+    <!-- Main content --><!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-user"></i>
+
+                        <h3 class="box-title">我的帐号</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-horizontal">
+
+                            <!--<div id="msg-success" class="alert alert-info alert-dismissable" style="display:none">-->
+                                <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
+                                <!--<h4><i class="icon fa fa-info"></i> Ok!</h4>-->
+                                <!--<p id="msg-success-p"></p>-->
+                            <!--</div>-->
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">用户名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" value="{{ user.user_name }}" readonly="true" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">邮&nbsp;&nbsp;&nbsp;箱</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" value="{{ user.email }}" readonly="true" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">帐号状态</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" value="{% if user.enable %}正常{% else %}不可用{% endif %}" readonly="true" disabled="disabled">
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--<dl class="dl-horizontal">-->
+                            <!--<dt>用户名</dt>-->
+                            <!--<dd>{{ user.user_name }}</dd>-->
+                            <!--<dt>邮&nbsp;&nbsp;&nbsp;箱</dt>-->
+                            <!--<dd>{{ user.email }}</dd>-->
+                        <!--</dl>-->
+
+                    </div>
+                    <div class="box-footer">
+                        <a class="btn btn-danger" href="./kill">删除我的账户</a>
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-key"></i>
+                        <h3 class="box-title">网站登录密码</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+
+                    <div class="box-body">
+                        <div class="form-horizontal">
+
+                            <!--<div id="msg-success" class="alert alert-info alert-dismissable" style="display:none">-->
+                                <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>-->
+                                <!--<h4><i class="icon fa fa-info"></i> Ok!</h4>-->
+                                <!--<p id="msg-success-p"></p>-->
+                            <!--</div>-->
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">当前密码</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" placeholder="当前密码" id="oldpwd">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">新密码</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" placeholder="新密码" id="pwd">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">确认新密码</label>
+                                <div class="col-sm-9">
+                                    <input type="password" placeholder="确认新密码" class="form-control" id="repwd">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" id="pwd-update" class="btn btn-primary">修改</button>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <i class="fa fa-link"></i>
+                        <h3 class="box-title">Shadowsocks(R) 连接信息</h3>
+                    </div>
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+                        <div class="form-horizontal">
+                            <div id="ss-msg-success" class="alert alert-success alert-dismissable" style="display:none">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-info"></i> 修改成功!</h4>
+                                <p id="ss-msg-success-p"></p>
+                            </div>
+                            <div id="ss-msg-error" class="alert alert-warning alert-dismissable" style="display:none">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <h4><i class="icon fa fa-warning"></i> 出错了!</h4>
+                                <p id="ss-msg-error-p"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">连接密码</label>
+                                <div class="col-sm-9">
+                                    <!--<div class="input-group">-->
+                                        <input type="text" id="sspwd" value="{{ user.passwd }}" class="form-control">
+                                        <!--<div class="input-group-btn">-->
+                                            <!--<button type="submit" id="ss-pwd-update" class="btn btn-primary">修改</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">协议插件</label>
+                                <div class="col-sm-9">
+                                    <!--<div class="input-group">-->
+                                        <select class="selectpicker form-control" id="protocol" {% if not user.custom_rss and False %} disabled="disabled" {% endif %}>
+                                            <option data-subtext="<i>兼容原版SS</i>" value="origin" {% if user.protocol=="origin" %}selected="selected"{% endif %}>origin</option>
+                                            <option value="verify_deflate" {% if user.protocol=="verify_deflate" %}selected="selected"{% endif %}>verify_deflate</option>
+                                            <!--<option value="verify_sha1" {% if user.protocol=="verify_sha1" %}selected="selected"{% endif %}>verify_sha1</option>-->
+                                            <!--<option value="auth_sha1" {% if user.protocol=="auth_sha1" %}selected="selected"{% endif %}>auth_sha1</option>-->
+                                            <!--<option value="auth_sha1_compatible" {% if user.protocol=="auth_sha1_compatible" %}selected="selected"{% endif %}>auth_sha1_compatible</option>-->
+                                            <!--<option data-subtext="推荐" value="auth_sha1_v2" {% if user.protocol=="auth_sha1_v2" %}selected="selected"{% endif %}>auth_sha1_v2</option>-->
+                                            <!--<option value="auth_sha1_v2_compatible" {% if user.protocol=="auth_sha1_v2_compatible" %}selected="selected"{% endif %}>auth_sha1_v2_compatible</option>-->
+                                            {#<!--<option data-subtext="推荐" value="auth_sha1_v4" {% if user.protocol=="auth_sha1_v4" %}selected="selected"{% endif %}>auth_sha1_v4</option>-->#}
+                                            <option data-subtext="<i>兼容原版SS</i>" value="auth_sha1_v4_compatible" {% if user.protocol=="auth_sha1_v4_compatible" %}selected="selected"{% endif %}>auth_sha1_v4</option>
+                                            <option value="auth_aes128_md5" {% if user.protocol=="auth_aes128_md5" %}selected="selected"{% endif %}>auth_aes128_md5</option>
+                                            <!--<option data-subtext="推荐" value="auth_aes128_sha1" {% if user.protocol=="auth_aes128_sha1" %}selected="selected"{% endif %}>auth_aes128_sha1</option>-->
+                                            <option value="auth_aes128_sha1" {% if user.protocol=="auth_aes128_sha1" %}selected="selected"{% endif %}>auth_aes128_sha1</option>
+ 											<option data-subtext="<i>推荐</i>" value="auth_chain_a" {% if user.protocol=="auth_chain_a" %}selected="selected"{% endif %}>auth_chain_a</option>
+                                        </select>
+                                        <!--<div class="input-group-btn">-->
+                                            <!--<button type="submit" id="protocol-update" class="btn btn-primary" {% if not user.custom_rss %} disabled="disabled" {% endif %}>修改</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">混淆插件</label>
+                                <div class="col-sm-9">
+                                    <!--<div class="input-group">-->
+                                        <select class="form-control selectpicker" id="obfs" {% if not user.custom_rss and False %} disabled="disabled" {% endif %}>
+                                            <option data-subtext="<i>兼容原版SS</i>" value="plain" {% if user.obfs=="plain" %}selected="selected"{% endif %}>plain</option>
+                                            {#<!--<option data-subtext="推荐" value="http_simple" {% if user.obfs=="http_simple" %}selected="selected"{% endif %}>http_simple</option>-->#}
+                                            <option data-subtext="<i>兼容原版SS</i>" value="http_simple_compatible" {% if user.obfs=="http_simple_compatible" %}selected="selected"{% endif %}>http_simple</option>
+                                            {#<!--<option value="http_post" {% if user.obfs=="http_post" %}selected="selected"{% endif %}>http_post</option>-->#}
+                                            <option data-subtext="<i>兼容原版SS</i>" value="http_post_compatible" {% if user.obfs=="http_post_compatible" %}selected="selected"{% endif %}>http_post</option>
+                                            <option value="random_head" {% if user.obfs=="random_head" %}selected="selected"{% endif %}>random_head</option>
+                                            {#<!--<option data-subtext="推荐" value="tls1.2_ticket_auth" {% if user.obfs=="tls1.2_ticket_auth" %}selected="selected"{% endif %}>tls1.2_ticket_auth</option>-->#}
+                                            <option data-subtext="<i>兼容原版SS</i>" value="tls1.2_ticket_auth_compatible" {% if user.obfs=="tls1.2_ticket_auth_compatible" %}selected="selected"{% endif %}>tls1.2_ticket_auth</option>
+                                        </select>
+                                        <!--<div class="input-group-btn">-->
+                                            <!--<button type="submit" id="obfs-update" class="btn btn-primary" {% if not user.custom_rss %} disabled="disabled" {% endif %}>修改</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">加密方法</label>
+                                <div class="col-sm-9">
+                                    <!--<div class="input-group">-->
+                                        <select class="form-control selectpicker" id="method" {% if not user.custom_method and False %} disabled="disabled"{% endif %}>
+                                            <option value="none" {% if user.method=="none" %}selected="selected"{% endif %}>none</option>
+                                            <option value="table" {% if user.method=="table" %}selected="selected"{% endif %}>table</option>
+                                            <option value="aes-128-cfb" {% if user.method=="aes-128-cfb" %}selected="selected"{% endif %}>aes-128-cfb</option>
+                                            <option value="aes-192-cfb" {% if user.method=="aes-192-cfb" %}selected="selected"{% endif %}>aes-192-cfb</option>
+                                            <option data-subtext="推荐" value="aes-256-cfb" {% if user.method=="aes-256-cfb" %}selected="selected"{% endif %}>aes-256-cfb</option>
+                                            <option value="aes-128-ctr" {% if user.method=="aes-128-ctr" %}selected="selected"{% endif %}>aes-128-ctr</option>
+                                            <option value="aes-192-ctr" {% if user.method=="aes-192-ctr" %}selected="selected"{% endif %}>aes-192-ctr</option>
+                                            <option value="aes-256-ctr" {% if user.method=="aes-256-ctr" %}selected="selected"{% endif %}>aes-256-ctr</option>
+                                            <option value="bf-cfb" {% if user.method=="bf-cfb" %}selected="selected"{% endif %}>bf-cfb</option>
+                                            <option value="camellia-128-cfb" {% if user.method=="camellia-128-cfb" %}selected="selected"{% endif %}>camellia-128-cfb</option>
+                                            <option value="camellia-192-cfb" {% if user.method=="camellia-192-cfb" %}selected="selected"{% endif %}>camellia-192-cfb</option>
+                                            <option value="camellia-256-cfb" {% if user.method=="camellia-256-cfb" %}selected="selected"{% endif %}>camellia-256-cfb</option>
+                                            <option value="rc4-md5" {% if user.method=="rc4-md5" %}selected="selected"{% endif %}>rc4-md5</option>
+                                            <option value="rc4-md5-6" {% if user.method=="rc4-md5-6" %}selected="selected"{% endif %}>rc4-md5-6</option>
+                                            <option value="salsa20" {% if user.method=="salsa20" %}selected="selected"{% endif %}>salsa20</option>
+                                            <option data-subtext="推荐" value="chacha20" {% if user.method=="chacha20" %}selected="selected"{% endif %}>chacha20</option>
+                                            <option data-subtext="推荐" value="chacha20-ietf" {% if user.method=="chacha20-ietf" %}selected="selected"{% endif %}>chacha20-ietf</option>
+                                        </select>
+                                        <!--<div class="input-group-btn">-->
+                                            <!--<button type="submit" id="method-update" class="btn btn-primary" {% if user.custom_method == 0 %} disabled="disabled" {% endif %}>修改</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-footer">
+                        <button type="submit" id="ssr-update" class="btn btn-primary">修改</button>
+                    </div>
+                </div>
+            </div>
+        <!-- /.box-body -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div><!-- /.content-wrapper -->
+{% endblock %}

@@ -1,0 +1,37 @@
+/* Custom Stylesheet */
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+
+/* custom bootstrap-select*/
+.bootstrap-select.btn-group.disabled, .bootstrap-select.btn-group>.disabled {
+    background: #eee;
+}
+
+.box.box-solid > .box-header .btn.btn-default {
+  background: transparent;
+}
+.btn-default {
+  background-color: #fff;
+  color: #444;
+  border-color: #ddd;
+}
+.btn-default.active,
+.btn-default.focus,
+.btn-default:active,
+.btn-default:focus,
+.btn-default:hover,
+.open>.dropdown-toggle.btn-default {
+    /*color: #333;*/
+    background-color: #fff !important;
+    border-color: #adadad;
+}
+
+/* fix bootstrap-select's bug */
+.bootstrap-select>select.form-control {
+    z-index: 0;
+}

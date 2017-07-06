@@ -1,0 +1,101 @@
+{% extends 'user_panel/user_panel_base.html' %}
+
+{% block bodybox %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            节点列表
+            <small>Node List</small>
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- START PROGRESS BARS -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="callout callout-warning">
+                    <!--<h4>注意!</h4>-->
+                    <p>为保障您的正常使用，请勿在任何地方公开节点地址！</p>
+                    <p>流量比例：如 0.8 即使用 1000MB 按 800MB 流量记录结算。</p>
+                    {% if msg %}<p>{{ msg }}</p>{% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% for node in nodes %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-widget">
+                        <div class="box-body">
+                            <ul class="products-list product-list-in-box">
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="/static/images/iconfont-server.png" alt="Server Node">
+                                    </div>
+                                    <div class="product-info">
+                                        <a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}" class="product-title">{{ node.name }}
+                                            {% if node.status == 1 %}
+                                            <span class="pull-right badge bg-green">可用</span>
+                                            {% else %}
+                                            <span class="pull-right badge bg-red">不可用</span>
+                                            {% endif %}
+                                        </a>
+                                        <p>{{ node.info }}</p>
+                                    </div>
+                                </li><!-- /.item -->
+                            </ul>
+                        </div>
+                        <div class="box-footer no-padding">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="nav nav-stacked">
+                                        <li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">节点地址 <span
+                                                        class="pull-right badge bg-blue">{{ node.server }}</span></a></li>
+                                        <!--<li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">连接端口 <span-->
+                                                    <!--class="pull-right badge bg-aqua">{{ user.port }}</span></a></li>-->
+
+                                        <!--<li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">协议插件 <span
+                                                       class="pull-right badge bg-aqua">{{ user.protocol }}</span></a></li>-->
+                                        <!--<li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">协议参数 <span
+                                                       class="pull-right badge bg-aqua">{{ user.protocol_param }}</span></a></li> -->
+                                        <!--<li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">混淆插件 <span
+                                                       class="pull-right badge bg-aqua">{{ user.obfs }}</span></a></li>
+                                        {% if user.obfs == 'http_post' or user.obfs=='http_simple' or user.obfs == 'tls1.2_ticket_auth' %}
+                                        <li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">混淆参数 <span
+                                                       class="pull-right badge bg-aqua">{{ user.obfs_param }}&nbsp;&nbsp;&nbsp;&nbsp;</span></a></li>
+                                        {% endif %} -->
+
+                                        <!--<li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">加密方式 <span-->
+                                                        <!--class="pull-right badge bg-aqua">{{ user.method }}</span></a></li>-->
+                                        <li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">Uptime <span
+                                                        class="pull-right badge bg-aqua">{{ node.uptime }}</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="nav nav-stacked">
+                                        <li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">流量比例
+                                            <span class="pull-right badge bg-blue">{{ node.traffic_rate }}</span></a></li>
+                                        <!--<li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">在线人数-->
+                                            <!--<span class="pull-right badge bg-green">{{ node.online_user_count }}</span></a></li>-->
+                                        <!--<li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">产生流量-->
+                                            <!--<span class="pull-right badge bg-green">{{ node.traffic_from_logs }}</span></a></li>-->
+                                        <li><a href="{{ url_for('user_panel.node_detail', node_id=node.id) }}">负载
+                                            <span class="pull-right badge bg-green">{{ node.server_load }}</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!-- /.widget-user -->
+                </div><!-- /.col -->
+            </div>
+            <!-- /.row -->
+        {% endfor %}
+    </section>
+    <!-- /.content -->
+</div><!-- /.content-wrapper -->
+{% endblock %}

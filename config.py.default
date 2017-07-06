@@ -1,0 +1,19 @@
+import multiprocessing
+
+
+DEBUG = False
+DB_CONFIG = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'root',
+    'port': 3306,
+    'database': 'db_name',
+    'charset': 'utf8'
+}
+PORT = 8000
+SECRET = 'secret!!!!!!!!'
+WORKERS = multiprocessing.cpu_count()
+
+CHECKIN_TIME = 24
+CHECKIN_MIN = 10
+CHECKIN_MAX = 100
