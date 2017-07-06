@@ -1,9 +1,7 @@
-#ssr-panel-sanic
+# ssr-panel-sanic
+
 A shadowsocksR panel written in [Sanic](https://github.com/channelcat/sanic).
 
-## Download
-
-Please visit [releases pages](https://github.com/gaolycn/ssr-panel-sanic/releases) to download ssr-panel-sanic.
 
 ## Requirements
 
@@ -19,9 +17,7 @@ Please visit [releases pages](https://github.com/gaolycn/ssr-panel-sanic/release
 
 ### Step 1
 
-```
-git clone https://github.com/gaolycn/ssr-panel-sanic.git
-```
+Visit [releases pages](https://github.com/gaolycn/ssr-panel-sanic/releases) to download ssr-panel-sanic.
 
 ### Step 2
 
