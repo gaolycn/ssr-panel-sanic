@@ -4,3 +4,4 @@ sanic-jinja2==0.5.1
 peewee-async==0.5.7
 aiomysql==0.0.9
 python-paginate==0.3.5
+itsdangerous==0.24

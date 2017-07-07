@@ -1,11 +1,11 @@
 # ssr-panel-sanic
 
-A shadowsocksR panel written in [Sanic](https://github.com/channelcat/sanic).
+A ShadowsocksR panel written in [Sanic](https://github.com/channelcat/sanic).
 
 
 ## Requirements
 
-* Python 3.6
+* Python 3.5+
 * MySQL
 
 ## Supported shadowsocks Server
