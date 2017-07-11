@@ -33,21 +33,21 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">用户名</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" value="{{ user.user_name }}" readonly="true" disabled="disabled">
+                                    <input type="text" class="form-control" value="{{ user.user_name }}" readonly="readonly" disabled="disabled">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">邮&nbsp;&nbsp;&nbsp;箱</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" value="{{ user.email }}" readonly="true" disabled="disabled">
+                                    <input type="text" class="form-control" value="{{ user.email }}" readonly="readonly" disabled="disabled">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">帐号状态</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" value="{% if user.enable %}正常{% else %}不可用{% endif %}" readonly="true" disabled="disabled">
+                                    <input type="text" class="form-control" value="{% if user.enable %}正常{% else %}不可用{% endif %}" readonly="readonly" disabled="disabled">
                                 </div>
                             </div>
 
@@ -144,12 +144,54 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-3 control-label">端&nbsp;&nbsp;&nbsp;口</label>
+                                <div class="col-sm-9">
+                                    <!--<div class="input-group">-->
+                                        <input type="text" id="port" value="{{ user.port }}" readonly="readonly" disabled="disabled" class="form-control">
+                                        <!--<div class="input-group-btn">-->
+                                            <!--<button type="submit" id="ss-pwd-update" class="btn btn-primary">修改</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label">连接密码</label>
                                 <div class="col-sm-9">
                                     <!--<div class="input-group">-->
                                         <input type="text" id="sspwd" value="{{ user.passwd }}" class="form-control">
                                         <!--<div class="input-group-btn">-->
                                             <!--<button type="submit" id="ss-pwd-update" class="btn btn-primary">修改</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">加密方法</label>
+                                <div class="col-sm-9">
+                                    <!--<div class="input-group">-->
+                                        <select class="form-control selectpicker" id="method" {% if not user.custom_method and False %} disabled="disabled"{% endif %}>
+                                            <option value="none" {% if user.method=="none" %}selected="selected"{% endif %}>none</option>
+                                            <option value="table" {% if user.method=="table" %}selected="selected"{% endif %}>table</option>
+                                            <option value="aes-128-cfb" {% if user.method=="aes-128-cfb" %}selected="selected"{% endif %}>aes-128-cfb</option>
+                                            <option value="aes-192-cfb" {% if user.method=="aes-192-cfb" %}selected="selected"{% endif %}>aes-192-cfb</option>
+                                            <option data-subtext="推荐" value="aes-256-cfb" {% if user.method=="aes-256-cfb" %}selected="selected"{% endif %}>aes-256-cfb</option>
+                                            <option value="aes-128-ctr" {% if user.method=="aes-128-ctr" %}selected="selected"{% endif %}>aes-128-ctr</option>
+                                            <option value="aes-192-ctr" {% if user.method=="aes-192-ctr" %}selected="selected"{% endif %}>aes-192-ctr</option>
+                                            <option value="aes-256-ctr" {% if user.method=="aes-256-ctr" %}selected="selected"{% endif %}>aes-256-ctr</option>
+                                            <option value="bf-cfb" {% if user.method=="bf-cfb" %}selected="selected"{% endif %}>bf-cfb</option>
+                                            <option value="camellia-128-cfb" {% if user.method=="camellia-128-cfb" %}selected="selected"{% endif %}>camellia-128-cfb</option>
+                                            <option value="camellia-192-cfb" {% if user.method=="camellia-192-cfb" %}selected="selected"{% endif %}>camellia-192-cfb</option>
+                                            <option value="camellia-256-cfb" {% if user.method=="camellia-256-cfb" %}selected="selected"{% endif %}>camellia-256-cfb</option>
+                                            <option value="rc4-md5" {% if user.method=="rc4-md5" %}selected="selected"{% endif %}>rc4-md5</option>
+                                            <option value="rc4-md5-6" {% if user.method=="rc4-md5-6" %}selected="selected"{% endif %}>rc4-md5-6</option>
+                                            <option value="salsa20" {% if user.method=="salsa20" %}selected="selected"{% endif %}>salsa20</option>
+                                            <option data-subtext="推荐" value="chacha20" {% if user.method=="chacha20" %}selected="selected"{% endif %}>chacha20</option>
+                                            <option data-subtext="推荐" value="chacha20-ietf" {% if user.method=="chacha20-ietf" %}selected="selected"{% endif %}>chacha20-ietf</option>
+                                        </select>
+                                        <!--<div class="input-group-btn">-->
+                                            <!--<button type="submit" id="method-update" class="btn btn-primary" {% if user.custom_method == 0 %} disabled="disabled" {% endif %}>修改</button>-->
                                         <!--</div>-->
                                     <!--</div>-->
                                 </div>
@@ -202,35 +244,6 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">加密方法</label>
-                                <div class="col-sm-9">
-                                    <!--<div class="input-group">-->
-                                        <select class="form-control selectpicker" id="method" {% if not user.custom_method and False %} disabled="disabled"{% endif %}>
-                                            <option value="none" {% if user.method=="none" %}selected="selected"{% endif %}>none</option>
-                                            <option value="table" {% if user.method=="table" %}selected="selected"{% endif %}>table</option>
-                                            <option value="aes-128-cfb" {% if user.method=="aes-128-cfb" %}selected="selected"{% endif %}>aes-128-cfb</option>
-                                            <option value="aes-192-cfb" {% if user.method=="aes-192-cfb" %}selected="selected"{% endif %}>aes-192-cfb</option>
-                                            <option data-subtext="推荐" value="aes-256-cfb" {% if user.method=="aes-256-cfb" %}selected="selected"{% endif %}>aes-256-cfb</option>
-                                            <option value="aes-128-ctr" {% if user.method=="aes-128-ctr" %}selected="selected"{% endif %}>aes-128-ctr</option>
-                                            <option value="aes-192-ctr" {% if user.method=="aes-192-ctr" %}selected="selected"{% endif %}>aes-192-ctr</option>
-                                            <option value="aes-256-ctr" {% if user.method=="aes-256-ctr" %}selected="selected"{% endif %}>aes-256-ctr</option>
-                                            <option value="bf-cfb" {% if user.method=="bf-cfb" %}selected="selected"{% endif %}>bf-cfb</option>
-                                            <option value="camellia-128-cfb" {% if user.method=="camellia-128-cfb" %}selected="selected"{% endif %}>camellia-128-cfb</option>
-                                            <option value="camellia-192-cfb" {% if user.method=="camellia-192-cfb" %}selected="selected"{% endif %}>camellia-192-cfb</option>
-                                            <option value="camellia-256-cfb" {% if user.method=="camellia-256-cfb" %}selected="selected"{% endif %}>camellia-256-cfb</option>
-                                            <option value="rc4-md5" {% if user.method=="rc4-md5" %}selected="selected"{% endif %}>rc4-md5</option>
-                                            <option value="rc4-md5-6" {% if user.method=="rc4-md5-6" %}selected="selected"{% endif %}>rc4-md5-6</option>
-                                            <option value="salsa20" {% if user.method=="salsa20" %}selected="selected"{% endif %}>salsa20</option>
-                                            <option data-subtext="推荐" value="chacha20" {% if user.method=="chacha20" %}selected="selected"{% endif %}>chacha20</option>
-                                            <option data-subtext="推荐" value="chacha20-ietf" {% if user.method=="chacha20-ietf" %}selected="selected"{% endif %}>chacha20-ietf</option>
-                                        </select>
-                                        <!--<div class="input-group-btn">-->
-                                            <!--<button type="submit" id="method-update" class="btn btn-primary" {% if user.custom_method == 0 %} disabled="disabled" {% endif %}>修改</button>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -245,4 +258,32 @@
     </section>
     <!-- /.content -->
 </div><!-- /.content-wrapper -->
+
+<script>
+    $("#ssr-update").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "{{ url_for('user_panel.ssr_edit') }}",
+            dataType: "json",
+            data: {
+                sspwd: $("#sspwd").val(),
+                method: $("#method").val(),
+                protocol: $("#protocol").val(),
+                obfs: $("#obfs").val()
+            },
+            success: function (data) {
+                if (data.ret == 1) {
+                    $("#ss-msg-success").show();
+                    $("#ss-msg-success-p").html(data.msg);
+                } else {
+                    $("#ss-msg-error").show();
+                    $("#ss-msg-error-p").html(data.msg);
+                }
+            },
+            error: function (jqXHR) {
+                alert("发生错误：" + jqXHR.status);
+            }
+        })
+    });
+</script>
 {% endblock %}

@@ -81,7 +81,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="protocol_param">默认协议参数</label>
                                         <div class="col-sm-9">
-                                            <input class="form-control" id="protocol_param" type="text" readonly="true" value="{{ node.protocol_param or '' }}" {% if node.protocol != "auth_chain_a" and node.protocol != "auth_sha1_v4" and node.protocol != "auth_aes128_md5" and node.protocol != "auth_aes128_sha1" %} disabled="disabled"{% endif %}>
+                                            <input class="form-control" id="protocol_param" type="text" readonly="readonly" value="{{ node.protocol_param or '' }}" {% if node.protocol != "auth_chain_a" and node.protocol != "auth_sha1_v4" and node.protocol != "auth_aes128_md5" and node.protocol != "auth_aes128_sha1" %} disabled="disabled"{% endif %}>
                                         </div>
                                     </div>
 
@@ -103,7 +103,7 @@
                                     <!--<div class="form-group">
                                         <label class="col-sm-3 control-label" for="obfs_param">默认混淆参数</label>
                                         <div class="col-sm-9">
-                                            <input class="form-control" id="obfs_param" type="text"  readonly="true" value="{{ node.obfs_param }}" {% if node.obfs != "http_simple" and node.obfs != "http_post" and node.obfs != "tls1.2_ticket_auth" %} disabled="disabled"{% endif %}>
+                                            <input class="form-control" id="obfs_param" type="text"  readonly="readonly" value="{{ node.obfs_param }}" {% if node.obfs != "http_simple" and node.obfs != "http_post" and node.obfs != "tls1.2_ticket_auth" %} disabled="disabled"{% endif %}>
                                         </div>
                                     </div>-->
 

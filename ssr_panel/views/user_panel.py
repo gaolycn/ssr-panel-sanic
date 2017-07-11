@@ -8,7 +8,8 @@ from python_paginate.web.sanic_paginate import Pagination
 from utils import tools
 from utils.decorators import login_required
 from ssr_panel import render
-from ssr_panel.models import User, SS_Node, User_Traffic_Log, SS_Checkin_Log
+from ssr_panel.models import User, SS_Node, User_Traffic_Log, SS_Checkin_Log, \
+    METHOD_CHOICES, PROTOCOL_CHOICES, OBFS_CHOICES
 
 user_panel = Blueprint('user_panel', url_prefix='/dashboard')
 
@@ -222,15 +223,32 @@ async def checkin(request):
 @login_required
 async def ssr_edit(request):
     sspwd = request.form.get('sspwd', '')
-    pattern = r'^[\w\-\.@#$]{6,16}$'
+    method = request.form.get('method', '')
+    protocol = request.form.get('protocol', '')
+    obfs = request.form.get('obfs', '')
 
     res = {'ret': 0}
-    if not re.match(pattern, sspwd):
+    if not re.match('^[\w\-\.@#$]{6,16}$', sspwd):
         res['msg'] = "SS连接密码不符合规则，只能为6-16位长度，包含数字大小写字母-._@#$"
+        return json(res)
+
+    if method not in dict(METHOD_CHOICES):
+        res['msg'] = '加密方法错误'
+        return json(res)
+
+    if protocol not in dict(PROTOCOL_CHOICES):
+        res['msg'] = '协议错误'
+        return json(res)
+
+    if obfs not in dict(OBFS_CHOICES):
+        res['msg'] = '混淆错误'
         return json(res)
 
     user = request['user']
     user.passwd = sspwd
+    user.method = method
+    user.protocol = protocol
+    user.obfs = obfs
     await User.objects.update(user)
 
     res['ret'] = 1

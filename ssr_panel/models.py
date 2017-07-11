@@ -35,6 +35,14 @@ PROTOCOL_CHOICES = (
     ('auth_chain_a', 'auth_chain_a'),
 )
 
+OBFS_CHOICES = (
+    ('plain', 'plain'),
+    ('http_post_compatible', 'http_post_compatible'),
+    ('http_simple_compatible', 'http_simple_compatible'),
+    ('random_head', 'random_head'),
+    ('tls1.2_ticket_auth_compatible', 'tls1.2_ticket_auth_compatible'),
+)
+
 
 class User(AsyncBaseModel):
     user_name = peewee.CharField(max_length=128)
@@ -63,7 +71,7 @@ class User(AsyncBaseModel):
     custom_rss = peewee.IntegerField(default=0)
     protocol = peewee.CharField(max_length=256, choices=PROTOCOL_CHOICES, default='origin')
     protocol_param = peewee.CharField(max_length=256, null=True)
-    obfs = peewee.CharField(max_length=256, default='plain')
+    obfs = peewee.CharField(max_length=256, choices=OBFS_CHOICES, default='plain')
     obfs_param = peewee.CharField(max_length=256, null=True)
     user_class = peewee.IntegerField(default=0)
     node_group = peewee.IntegerField(default=0)
