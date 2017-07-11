@@ -1,3 +1,5 @@
+import random
+import string
 import base64
 
 
@@ -20,12 +22,12 @@ def flow_to_gb(traffic):
     return traffic / gb
 
 
-def to_mb(traffic):
+def mb_to_byte(traffic):
     mb = 1048576
     return traffic * mb
 
 
-def to_gb(traffic):
+def gb_to_byte(traffic):
     gb = 1048576 * 1024
     return traffic * gb
 
@@ -44,3 +46,14 @@ def base64_encode(s):
 
 def base64_decode(s):
     return base64.b64decode(s)
+
+
+def random_string(length=6):
+    result = ''
+    while len(result) < length:
+        s = random.choice(string.ascii_letters + string.digits)
+        if s in 'iIoOzZ012':
+            continue
+        result += s
+
+    return result

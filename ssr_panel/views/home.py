@@ -1,6 +1,6 @@
 from sanic import Blueprint, response
 from utils.decorators import login_optional
-from ss_panel import app
+from ssr_panel import app
 
 home = Blueprint('home', url_prefix='/')
 

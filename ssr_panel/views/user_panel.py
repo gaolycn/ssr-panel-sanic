@@ -5,10 +5,10 @@ import ujson
 from sanic import Blueprint
 from sanic.response import json
 from python_paginate.web.sanic_paginate import Pagination
-from utils import ss_tool
+from utils import tools
 from utils.decorators import login_required
-from ss_panel import render
-from ss_panel.models import User, SS_Node, User_Traffic_Log, SS_Checkin_Log
+from ssr_panel import render
+from ssr_panel.models import User, SS_Node, User_Traffic_Log, SS_Checkin_Log
 
 user_panel = Blueprint('user_panel', url_prefix='/dashboard')
 
@@ -62,11 +62,11 @@ async def node_detail(request, node_id):
             user.protocol.replace('_compatible', ''),
             ss_info['method'],
             user.obfs.replace('_compatible', ''),
-            ss_tool.base64_url_encode(ss_info['password']),
-            ss_tool.base64_url_encode(user.obfs_param),
-            ss_tool.base64_url_encode(node.name)
+            tools.base64_url_encode(ss_info['password']),
+            tools.base64_url_encode(user.obfs_param),
+            tools.base64_url_encode(node.name)
         )
-        ssqr_s_n = 'ssr://' + ss_tool.base64_url_encode(ss_url)
+        ssqr_s_n = 'ssr://' + tools.base64_url_encode(ss_url)
         ss_url = '%s:%s:%s:%s@%s:%s/%s' % (
             user.obfs.replace('_compatible', ''),
             user.protocol.replace('_compatible', ''),
@@ -74,9 +74,9 @@ async def node_detail(request, node_id):
             ss_info['password'],
             ss_info['server'],
             ss_info['server_port'],
-            ss_tool.base64_encode(user.obfs_param)
+            tools.base64_encode(user.obfs_param)
         )
-        ssqr_s = "ss://" + ss_tool.base64_encode(ss_url)
+        ssqr_s = "ss://" + tools.base64_encode(ss_url)
         ssqr = ssqr_s
     else:
         ss_url = '%s:%s:%s:%s:%s:%s/?obfsparam=%s&remarks=%s' % (
@@ -85,11 +85,11 @@ async def node_detail(request, node_id):
             user.protocol.replace('_compatible', ''),
             ss_info['method'],
             user.obfs.replace('_compatible', ''),
-            ss_tool.base64_url_encode(ss_info['password']),
-            ss_tool.base64_url_encode(user.obfs_param or ''),
-            ss_tool.base64_url_encode(node.name)
+            tools.base64_url_encode(ss_info['password']),
+            tools.base64_url_encode(user.obfs_param or ''),
+            tools.base64_url_encode(node.name)
         )
-        ssqr_s_n = "ssr://" + ss_tool.base64_encode(ss_url)
+        ssqr_s_n = "ssr://" + tools.base64_encode(ss_url)
         ss_url = '%s:%s:%s:%s@%s:%s/%s' % (
             user.obfs.replace('_compatible', ''),
             user.protocol.replace('_compatible', ''),
@@ -97,16 +97,16 @@ async def node_detail(request, node_id):
             ss_info['password'],
             ss_info['server'],
             ss_info['server_port'],
-            ss_tool.base64_encode(user.obfs_param or '')
+            tools.base64_encode(user.obfs_param or '')
         )
-        ssqr_s = "ss://" + ss_tool.base64_encode(ss_url)
+        ssqr_s = "ss://" + tools.base64_encode(ss_url)
         ss_url = '%s:%s@%s:%s' % (
             ss_info['method'],
             ss_info['password'],
             ss_info['server'],
             ss_info['server_port']
         )
-        ssqr = "ss://" + ss_tool.base64_encode(ss_url)
+        ssqr = "ss://" + tools.base64_encode(ss_url)
 
     surge_base = '/'.join(request.url.split('/')[:3]) + '/downloads/ProxyBase.conf'
     surge_proxy = '#!PROXY-OVERRIDE:ProxyBase.conf\n'
@@ -203,7 +203,7 @@ async def checkin(request):
         return json(res)
 
     traffic = random.randint(request.app.config.CHECKIN_MIN, request.app.config.CHECKIN_MAX)
-    traffic_to_add = ss_tool.to_mb(traffic)
+    traffic_to_add = tools.mb_to_byte(traffic)
 
     async with User.objects.atomic():
         user.transfer_enable += traffic_to_add
@@ -221,16 +221,16 @@ async def checkin(request):
 @user_panel.route('/ssr_edit', methods=['POST'])
 @login_required
 async def ssr_edit(request):
-    pwd = request.form.get('sspwd', '')
+    sspwd = request.form.get('sspwd', '')
     pattern = r'^[\w\-\.@#$]{6,16}$'
 
     res = {'ret': 0}
-    if not re.match(pattern, pwd):
+    if not re.match(pattern, sspwd):
         res['msg'] = "SS连接密码不符合规则，只能为6-16位长度，包含数字大小写字母-._@#$"
         return json(res)
 
     user = request['user']
-    user.passwd = pwd
+    user.passwd = sspwd
     await User.objects.update(user)
 
     res['ret'] = 1

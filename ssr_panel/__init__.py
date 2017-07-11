@@ -1,34 +1,29 @@
 import os
+import sys
 from textwrap import dedent
 from sanic import Sanic
 from sanic_jinja2 import SanicJinja2
 from python_paginate.css.semantic import Semantic
 from utils import sanic_cookiesession
 from utils.peewee_manager import declarative_base
-try:
-    from config import DEBUG, PORT, WORKERS, SECRET, DB_CONFIG, CHECKIN_TIME, CHECKIN_MIN, CHECKIN_MAX
-except ImportError:
-    notice = dedent('''
-        NOTE: No `config.py` file found.
-        `config.py.default` is a template file.
-        ''')
-    print(notice)
 
 app = Sanic(__name__)
 
 
-app.config['DEBUG'] = DEBUG
-app.config['PORT'] = PORT
-app.config['WORKERS'] = WORKERS
-app.config['SECRET'] = SECRET
-app.config['DB_CONFIG'] = DB_CONFIG
-app.config['CHECKIN_TIME'] = CHECKIN_TIME
-app.config['CHECKIN_MIN'] = CHECKIN_MIN
-app.config['CHECKIN_MAX'] = CHECKIN_MAX
+config_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config.py')
+if not os.path.exists(config_file):
+    notice = dedent('''
+        ERROR: No `config.py` file found.
+        `config.py.default` is a template file.
+        ''')
+    print(notice)
+    sys.exit(1)
 
-app.config['SESSION_COOKIE_SECRET_KEY'] = SECRET
-app.config['SESSION_COOKIE_SECURE'] = False
-app.config['SESSION_COOKIE_MAX_AGE'] = 3600 * 24 * 15
+app.config.from_pyfile(config_file)
+
+app.config.SESSION_COOKIE_SECRET_KEY = app.config.SECRET
+app.config.SESSION_COOKIE_SECURE = False
+app.config.SESSION_COOKIE_MAX_AGE = 3600 * 24 * 15
 
 sanic_cookiesession.setup(app)
 

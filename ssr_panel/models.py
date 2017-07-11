@@ -2,8 +2,8 @@ import datetime
 import time
 import hashlib
 import peewee
-from utils import ss_tool
-from ss_panel import app, AsyncBaseModel
+from utils import tools
+from ssr_panel import app, AsyncBaseModel
 
 
 METHOD_CHOICES = (
@@ -104,23 +104,24 @@ class User(AsyncBaseModel):
 
     @property
     def enable_traffic(self):
-        return ss_tool.flow_auto_show(self.transfer_enable)
+        return tools.flow_auto_show(self.transfer_enable)
 
     @property
     def enable_traffic_in_gb(self):
-        return ss_tool.flow_to_gb(self.transfer_enable)
+        return tools.flow_to_gb(self.transfer_enable)
 
     @property
     def used_traffic(self):
         total = self.u + self.d
-        return ss_tool.flow_auto_show(total)
+        return tools.flow_auto_show(total)
 
     @property
     def unused_traffic(self):
         total = self.u + self.d
-        return ss_tool.flow_auto_show(self.transfer_enable - total)
+        return tools.flow_auto_show(self.transfer_enable - total)
 
-    def hash_password(self, password):
+    @staticmethod
+    def hash_password(password):
         return hashlib.sha256((password + app.config.SECRET).encode('utf-8')).hexdigest()
 
     def verify_password(self, password):
@@ -199,7 +200,7 @@ class User_Traffic_Log(AsyncBaseModel):
 
     @property
     def total_used(self):
-        return ss_tool.flow_auto_show(self.u + self.d)
+        return tools.flow_auto_show(self.u + self.d)
 
     @property
     def log_datetime(self):

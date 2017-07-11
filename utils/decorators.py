@@ -1,7 +1,7 @@
 from functools import wraps
 from sanic import response
 from sanic.request import Request
-from ss_panel.models import User
+from ssr_panel.models import User
 
 
 def login_required(f):

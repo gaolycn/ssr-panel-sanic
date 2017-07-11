@@ -1,9 +1,11 @@
+import re
 from sanic import Blueprint
 from sanic.response import json, redirect
 from sanic.views import HTTPMethodView
 from utils.decorators import login_required, login_optional
-from ss_panel import app, render
-from ss_panel.models import User
+from utils import tools
+from ssr_panel import app, render
+from ssr_panel.models import User
 
 auth = Blueprint('auth', url_prefix='/auth')
 
@@ -23,9 +25,68 @@ VERIFY_EMAIL_WRONG_EMAIL = 701
 VERIFY_EMAIL_EXIST = 702
 
 
-@auth.route('/register')
-async def register(request):
-    return render('auth/register.html', request)
+class RegisterView(HTTPMethodView):
+
+    async def get(self, request):
+        return render('auth/register.html', request)
+
+    async def post(self, request):
+        email = request.form.get('email', '').strip().lower()
+        passwd = request.form.get('passwd', '')
+        repasswd = request.form.get('repasswd', '')
+
+        res = {'ret': 0}
+
+        if not re.compile(r'^[a-z_0-9.-]{1,64}@([a-z0-9-]{1,200}.){1,5}[a-z]{1,6}$').match(email):
+            res['msg'] = '邮箱格式不正确'
+            return json(res)
+
+        if passwd != repasswd:
+            res['msg'] = '两次密码不一致'
+            return json(res)
+
+        if not 6 <= len(passwd) <= 16:
+            res['msg'] = '密码长度 6 ～ 16 位'
+            return json(res)
+
+        users = await User.objects.execute(
+            User.select().where(User.email == email).limit(1)
+        )
+        if len(users) > 0:
+            res['msg'] = '邮箱已经被注册了'
+            return json(res)
+
+        max_port = 1024
+        try:
+            users = await User.objects.execute(
+                User.select().order_by(User.port.desc()).limit(1)
+            )
+            if users:
+                max_port = users[0].port
+        except User.DoesNotExist:
+            pass
+
+        await User.objects.create(
+            User,
+            user_name='',
+            email=email,
+            password=User.hash_password(passwd),
+            passwd=tools.random_string(6),
+            port=max_port + 1,
+            t=0,
+            u=0,
+            d=0,
+            transfer_enable=tools.gb_to_byte(app.config.DEFAULT_TRAFFIC),
+            invite_num=app.config.INVITE_NUM,
+            ref_by=0,
+            is_admin=0,
+            reg_ip=request.ip[0]
+        )
+
+        return json({'ret': 1, 'msg': '注册成功'})
+
+
+auth.add_route(RegisterView.as_view(), '/register')
 
 
 class LoginView(HTTPMethodView):

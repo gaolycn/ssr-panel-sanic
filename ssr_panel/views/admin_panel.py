@@ -1,12 +1,13 @@
+import re
 from sanic.views import HTTPMethodView
 from sanic.response import json
 from sanic import Blueprint
 from peewee import fn
 from python_paginate.web.sanic_paginate import Pagination
-from utils import ss_tool
+from utils import tools
 from utils.decorators import admin_required
-from ss_panel import render
-from ss_panel.models import User, SS_Node, SP_Config
+from ssr_panel import render
+from ssr_panel.models import User, SS_Node, SP_Config
 
 admin_panel = Blueprint('admin_panel', url_prefix='/admin')
 
@@ -18,7 +19,7 @@ async def index_view(request):
     analytics = {
         'total_user': await User.objects.count(User.select()),
         'checkin_user': await User.objects.count(User.select().where(User.last_check_in_time > 0)),
-        'traffic_usage': ss_tool.flow_auto_show(await User.objects.scalar(User.select(fn.Sum(User.u + User.d)))),
+        'traffic_usage': tools.flow_auto_show(await User.objects.scalar(User.select(fn.Sum(User.u + User.d)))),
         'online_user': await User.objects.count(User.select().where(User.t > 3600)),
         'total_node': await SS_Node.objects.count(SS_Node.select()),
     }
@@ -99,10 +100,52 @@ async def users_view(request):
                   pagination=pagination)
 
 
-@admin_panel.route('/users/<user_id:int>')
-@admin_required
-async def users_edit_view(request, user_id):
-    user = request['user']
+class UserView(HTTPMethodView):
+    decorators = [admin_required]
 
-    user_detail = await User.objects.get(User.id == user_id)
-    return render('admin_panel/user/edit.html', request, user=user, user_detail=user_detail)
+    async def get(self, request, user_id):
+        user = request['user']
+
+        user_detail = await User.objects.get(User.id == user_id)
+        return render('admin_panel/user/edit.html', request, user=user, user_detail=user_detail)
+
+    async def put(self, request, user_id):
+        password = request.form.get('pass')
+        sspwd = request.form.get('passwd')
+        pattern = r'^[\w\-\.@#$]{6,16}$'
+        res = {'ret': 0}
+
+        if sspwd and not re.match(pattern, sspwd):
+            res['msg'] = 'SS连接密码不符合规则，只能为6-16位长度，包含数字大小写字母-._@#$'
+            return json(res)
+
+        try:
+            transfer_enable = tools.gb_to_byte(float(request.form.get('transfer_enable', 0)))
+        except:
+            res['msg'] = '总流量输入错误'
+            return json(res)
+
+        user_detail = await User.objects.get(User.id == user_id)
+        user_detail.email = request.form.get('email', user_detail.email)
+        user_detail.port = request.form.get('port', user_detail.port)
+        user_detail.passwd = sspwd or user_detail.passwd
+        user_detail.transfer_enable = transfer_enable
+        user_detail.auto_reset_day = request.form.get('auto_reset_day', 0)
+        user_detail.invite_num = request.form.get('invite_num')
+        user_detail.protocol = request.form.get('protocol', user_detail.protocol)
+        user_detail.obfs = request.form.get('obfs', user_detail.obfs)
+        user_detail.method = request.form.get('method', user_detail.method)
+        user_detail.custom_method = request.form.get('custom_method', 0)
+        user_detail.custom_rss = request.form.get('custom_rss', 0)
+        user_detail.user_class = request.form.get('user_class', 0)
+        user_detail.node_group = request.form.get('node_group', 0)
+        user_detail.enable = request.form.get('enable', 0)
+        user_detail.expire_at = request.form.get('expire_at', user_detail.expire_at)
+        user_detail.is_admin = request.form.get('is_admin', 0)
+        user_detail.ref_by = request.form.get('ref_by', user_detail.ref_by)
+        await User.objects.update(user_detail)
+
+        res = {'ret': 1, 'msg': '更新成功'}
+        return json(res)
+
+admin_panel.add_route(UserView.as_view(), '/users/<user_id:int>')

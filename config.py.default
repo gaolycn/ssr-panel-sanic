@@ -1,7 +1,12 @@
 import multiprocessing
 
 
+WORKERS = multiprocessing.cpu_count()
 DEBUG = False
+HOST = '127.0.0.1'
+PORT = 8000
+SECRET = 'secret!!!!!!!!'
+
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
@@ -10,9 +15,10 @@ DB_CONFIG = {
     'database': 'db_name',
     'charset': 'utf8'
 }
-PORT = 8000
-SECRET = 'secret!!!!!!!!'
-WORKERS = multiprocessing.cpu_count()
+
+DEFAULT_TRAFFIC = 5  # GB
+
+INVITE_NUM = 3
 
 CHECKIN_TIME = 24
 CHECKIN_MIN = 10
