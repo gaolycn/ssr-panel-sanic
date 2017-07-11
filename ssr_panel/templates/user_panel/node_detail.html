@@ -258,7 +258,7 @@
 		            "text": text_qrcode
 	          });
 
-            {% if (user.obfs == 'origin' or user.obfs.endswith('_compatible')) and (user.protocol == 'plain' or user.protocol.endswith('_compatible')) %}
+            {% if (user.obfs == 'plain' or user.obfs.endswith('_compatible')) and (user.protocol == 'origin' or user.protocol.endswith('_compatible')) %}
             var text_qrcode_y = '{{ ssqr }}';
 	          jQuery('#ss-qr-y').qrcode({
 		            "text": text_qrcode_y
