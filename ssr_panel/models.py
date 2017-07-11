@@ -81,6 +81,10 @@ class User(AsyncBaseModel):
     reg_ip = peewee.CharField(max_length=256, default='127.0.0.1')
 
     @property
+    def username(self):
+        return self.user_name or (self.email + '@').split('@')[0]
+
+    @property
     def gravatar(self):
         email_hash = hashlib.md5(self.email.strip().lower().encode('utf-8')).hexdigest()
         return "https://secure.gravatar.com/avatar/%s?d=identicon&r=x" % email_hash

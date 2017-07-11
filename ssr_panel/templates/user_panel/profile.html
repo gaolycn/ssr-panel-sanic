@@ -31,13 +31,6 @@
                             <!--</div>-->
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">用户名</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" value="{{ user.user_name }}" readonly="readonly" disabled="disabled">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="col-sm-3 control-label">邮&nbsp;&nbsp;&nbsp;箱</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" value="{{ user.email }}" readonly="readonly" disabled="disabled">
@@ -48,6 +41,13 @@
                                 <label class="col-sm-3 control-label">帐号状态</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" value="{% if user.enable %}正常{% else %}不可用{% endif %}" readonly="readonly" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">注册时间</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" value="{{ user.reg_date }}" readonly="readonly" disabled="disabled">
                                 </div>
                             </div>
 
