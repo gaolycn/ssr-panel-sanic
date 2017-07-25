@@ -55,6 +55,14 @@ class ConfigView(HTTPMethodView):
 admin_panel.add_route(ConfigView.as_view(), '/config')
 
 
+@admin_panel.route('/nodes/create')
+@admin_required
+async def nodes_create_view(request):
+    user = request['user']
+    # nodes = await SS_Node.objects.execute(SS_Node.select())
+    return render('admin_panel/node/create.html', request, user=user)
+
+
 class NodeView(HTTPMethodView):
     decorators = [admin_required]
 
