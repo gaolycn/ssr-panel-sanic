@@ -93,3 +93,5 @@ app.blueprint(home.home)
 app.blueprint(auth.auth)
 app.blueprint(user_panel.user_panel)
 app.blueprint(admin_panel.admin_panel)
+
+from . import exceptions

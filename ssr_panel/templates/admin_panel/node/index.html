@@ -8,7 +8,7 @@
         <h1>
             节点列表
             <small>Node List</small>
-            <small><small>如需修改加密方式、协议及混淆插件，请至用户管理界面修改</small></small>
+{#            <small><small>如需修改加密方式、协议及混淆插件，请至用户管理界面修改</small></small>#}
         </h1>
     </section>
 
@@ -26,7 +26,7 @@
                                 <th>节点地址</th>
                                 <th>节点群组</th>
                                 <th>节点等级</th>
-                                <th>默认加密</th>
+{#                                <th>默认加密</th>#}
                                 <th>流量比例</th>
                                 <th>是否显示</th>
                                 <th>节点状态</th>
@@ -38,12 +38,12 @@
                             </tr>
                             {% for node in nodes %}
                             <tr>
-                                <td>#{{ node.id }}</td>
+                                <td>{{ node.id }}</td>
                                 <td>{{ node.name }}</td>
                                 <td>{{ node.server }}</td>
                                 <td>{{ node.node_group }}</td>
                                 <td>{{ node.node_class }}</td>
-                                <td>{{ node.method }}</td>
+{#                                <td>{{ node.method }}</td>#}
                                 <td>{{ node.traffic_rate }}</td>
                                 <td>{% if node.type == 1 %}显示{% else %}隐藏{% endif %}</td>
                                 <td>{% if node.status == 1 %}可用{% else %}不可用{% endif %}</td>
@@ -77,21 +77,15 @@
                     name: $("#name").val()
                 },
                 success:function(data){
-                    if(data.ret){
-                        $("#msg-error").hide(100);
-                        $("#msg-success").show(100);
-                        $("#msg-success-p").html(data.msg);
-                        window.setTimeout("location.href='/admin/node'", 2000);
-                    }else{
-                        $("#msg-error").hide(10);
-                        $("#msg-error").show(100);
-                        $("#msg-error-p").html(data.msg);
-                    }
+                    $("#msg-error").hide(100);
+                    $("#msg-success").show(100);
+                    $("#msg-success-p").html(data.msg);
+                    window.setTimeout("location.href='/admin/node'", 2000);
                 },
                 error:function(jqXHR){
-                    $("#msg-error").hide(10);
+                    $("#msg-success").hide(10);
                     $("#msg-error").show(100);
-                    $("#msg-error-p").html("发生错误："+jqXHR.status);
+                    $("#msg-error-p").html(jqXHR.responseJSON.msg || '未知错误');
                 }
             });
         }

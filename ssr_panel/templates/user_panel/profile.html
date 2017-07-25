@@ -272,16 +272,11 @@
                 obfs: $("#obfs").val()
             },
             success: function (data) {
-                if (data.ret == 1) {
-                    $("#ss-msg-success").show();
-                    $("#ss-msg-success-p").html(data.msg);
-                } else {
-                    $("#ss-msg-error").show();
-                    $("#ss-msg-error-p").html(data.msg);
-                }
+                $("#ss-msg-success").show();
+                $("#ss-msg-success-p").html(data.msg);
             },
             error: function (jqXHR) {
-                alert("发生错误：" + jqXHR.status);
+                alert("发生错误：" + jqXHR.responseJSON.msg || '未知错误');
             }
         })
     });

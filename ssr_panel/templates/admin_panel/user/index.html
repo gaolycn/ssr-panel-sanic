@@ -21,7 +21,6 @@
                         <table class="table table-hover">
                             <tr>
                                 <th>ID</th>
-                                <th>昵称</th>
                                 <th>邮箱</th>
                                 <th>端口</th>
                                 <th>状态</th>
@@ -40,7 +39,6 @@
                             {% for user in users %}
                             <tr>
                                 <td>{{ user.id }}</td>
-                                <td>{{ user.user_name }}</td>
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.port }}</td>
 
@@ -87,21 +85,15 @@
                     name: $("#name").val()
                 },
                 success:function(data){
-                    if(data.ret){
-                        $("#msg-error").hide(100);
-                        $("#msg-success").show(100);
-                        $("#msg-success-p").html(data.msg);
-                        window.setTimeout("location.href='/admin/users'", 2000);
-                    }else{
-                        $("#msg-error").hide(10);
-                        $("#msg-error").show(100);
-                        $("#msg-error-p").html(data.msg);
-                    }
+                    $("#msg-error").hide(100);
+                    $("#msg-success").show(100);
+                    $("#msg-success-p").html(data.msg);
+                    window.setTimeout("location.href='/admin/users'", 2000);
                 },
                 error:function(jqXHR){
-                    $("#msg-error").hide(10);
+                    $("#msg-success").hide(10);
                     $("#msg-error").show(100);
-                    $("#msg-error-p").html("发生错误："+jqXHR.status);
+                    $("#msg-error-p").html(jqXHR.responseJSON.msg || '未知错误');
                 }
             });
         }

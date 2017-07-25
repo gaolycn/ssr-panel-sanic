@@ -52,7 +52,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{ user.gravatar }}" class="user-image" alt="User Image"/>
-                            <span class="hidden-xs">{{ user.email }}</span>
+                            <span class="hidden-xs">{{ user.username }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -111,7 +111,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url_for('admin_panel.nodes_view') }}">
+                    <a href="{{ url_for('admin_panel.NodeView') }}">
                         <i class="fa fa-sitemap"></i> <span>节点管理</span>
                     </a>
                 </li>

@@ -4,6 +4,7 @@ from sanic.response import json, redirect
 from sanic.views import HTTPMethodView
 from utils.decorators import login_required, login_optional
 from utils import tools
+from ssr_panel.exceptions import BadRequest
 from ssr_panel import app, render
 from ssr_panel.models import User
 
@@ -35,26 +36,20 @@ class RegisterView(HTTPMethodView):
         passwd = request.form.get('passwd', '')
         repasswd = request.form.get('repasswd', '')
 
-        res = {'ret': 0}
-
         if not re.compile(r'^[a-z_0-9.-]{1,64}@([a-z0-9-]{1,200}.){1,5}[a-z]{1,6}$').match(email):
-            res['msg'] = '邮箱格式不正确'
-            return json(res)
+            raise BadRequest('邮箱格式不正确')
 
         if passwd != repasswd:
-            res['msg'] = '两次密码不一致'
-            return json(res)
+            raise BadRequest('两次密码不一致')
 
         if not 6 <= len(passwd) <= 16:
-            res['msg'] = '密码长度 6 ～ 16 位'
-            return json(res)
+            raise BadRequest('密码长度 6 ～ 16 位')
 
         users = await User.objects.execute(
             User.select().where(User.email == email).limit(1)
         )
         if len(users) > 0:
-            res['msg'] = '邮箱已经被注册了'
-            return json(res)
+            raise BadRequest('邮箱已经被注册了')
 
         max_port = 1024
         try:
@@ -83,7 +78,7 @@ class RegisterView(HTTPMethodView):
             reg_ip=request.ip[0]
         )
 
-        return json({'ret': 1, 'msg': '注册成功'})
+        return json({'msg': '注册成功'})
 
 
 auth.add_route(RegisterView.as_view(), '/register')
@@ -105,19 +100,13 @@ class LoginView(HTTPMethodView):
         try:
             user = await User.objects.get(User.email == email)
         except User.DoesNotExist:
-            res['ret'] = 0
-            res['error_code'] = USER_NOT_EXIST
-            res['msg'] = "邮箱或者密码错误"
-            return json(res)
+            raise BadRequest('邮箱或者密码错误')
 
         if not user.verify_password(password):
-            res['ret'] = 0
-            res['error_code'] = USER_PASSWORD_WRONG
-            res['msg'] = "邮箱或者密码错误"
-            return json(res)
+            raise BadRequest('邮箱或者密码错误')
 
         request['session']['uid'] = user.id
-        return json({"ret": 1, "msg": "欢迎回来"})
+        return json({'msg': '欢迎回来'})
 
 auth.add_route(LoginView.as_view(), '/login')
 
@@ -147,24 +136,17 @@ async def password(request):
     pwd = request.form.get('pwd', '')
     re_pwd = request.form.get('repwd', '')
 
-    res = {'ret': 0}
-
     if pwd != re_pwd:
-        res['msg'] = '两次输入不符合'
-        return json(res)
+        raise BadRequest('两次输入不符合')
 
     if len(pwd) < 6:
-        res['msg'] = '密码太短啦'
-        return json(res)
+        raise BadRequest('密码太短啦')
 
     user = request['user']
     if not user.verify_password(old_pwd):
-        res['msg'] = '旧密码错误'
-        return json(res)
+        raise BadRequest('旧密码错误')
 
     user.password = user.hash_password(pwd)
     await User.objects.update(user)
 
-    res['ret'] = 1
-    res['msg'] = 'ok'
-    return json(res)
+    return json({'msg': '修改成功'})

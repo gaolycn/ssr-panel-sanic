@@ -45,7 +45,6 @@ OBFS_CHOICES = (
 
 
 class User(AsyncBaseModel):
-    user_name = peewee.CharField(max_length=128)
     email = peewee.CharField(max_length=128, unique=True)
     password = peewee.CharField(max_length=128)  # 登录密码
     passwd = peewee.CharField(max_length=128)  # SS密码
@@ -82,7 +81,7 @@ class User(AsyncBaseModel):
 
     @property
     def username(self):
-        return self.user_name or (self.email + '@').split('@')[0]
+        return (self.email + '@').split('@')[0]
 
     @property
     def gravatar(self):
@@ -151,11 +150,11 @@ class SS_Node(AsyncBaseModel):
     name = peewee.CharField(max_length=256)
     type = peewee.IntegerField()
     server = peewee.CharField(max_length=256)
-    method = peewee.CharField(max_length=128, default='aes-256-cfb')
-    protocol = peewee.CharField(max_length=256, default='origin')
-    protocol_param = peewee.CharField(max_length=256, null=True)
-    obfs = peewee.CharField(max_length=256, default='plain')
-    obfs_param = peewee.CharField(max_length=256, null=True)
+    # method = peewee.CharField(max_length=128, default='aes-256-cfb')
+    # protocol = peewee.CharField(max_length=256, default='origin')
+    # protocol_param = peewee.CharField(max_length=256, null=True)
+    # obfs = peewee.CharField(max_length=256, default='plain')
+    # obfs_param = peewee.CharField(max_length=256, null=True)
     node_class = peewee.IntegerField(default=0)
     node_group = peewee.IntegerField(default=0)
     traffic_rate = peewee.FloatField(default=1)

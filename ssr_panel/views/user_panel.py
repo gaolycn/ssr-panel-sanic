@@ -7,6 +7,7 @@ from sanic.response import json
 from python_paginate.web.sanic_paginate import Pagination
 from utils import tools
 from utils.decorators import login_required
+from ssr_panel.exceptions import BadRequest
 from ssr_panel import render
 from ssr_panel.models import User, SS_Node, User_Traffic_Log, SS_Checkin_Log, \
     METHOD_CHOICES, PROTOCOL_CHOICES, OBFS_CHOICES
@@ -197,15 +198,13 @@ async def invite(request):
 async def checkin(request):
     user = request['user']
 
-    res = {'msg': '签到失败，请稍候再试.', 'ret': 0}
     if not user.is_able_to_checkin:
-        res['msg'] = '您似乎已经签到过了...'
-        res['ret'] = 1
-        return json(res)
+        raise BadRequest('您似乎已经签到过了...')
 
     traffic = random.randint(request.app.config.CHECKIN_MIN, request.app.config.CHECKIN_MAX)
     traffic_to_add = tools.mb_to_byte(traffic)
 
+    res = {'msg': '签到失败，请稍候再试.'}
     async with User.objects.atomic():
         user.transfer_enable += traffic_to_add
         user.last_check_in_time = time.time()
@@ -214,7 +213,6 @@ async def checkin(request):
         await SS_Checkin_Log.objects.create(SS_Checkin_Log, user=user, traffic=traffic_to_add)
 
         res['msg'] = '获得了 %s MB流量.' % traffic
-        res['ret'] = 1
 
     return json(res)
 
@@ -227,22 +225,17 @@ async def ssr_edit(request):
     protocol = request.form.get('protocol', '')
     obfs = request.form.get('obfs', '')
 
-    res = {'ret': 0}
     if not re.match('^[\w\-\.@#$]{6,16}$', sspwd):
-        res['msg'] = "SS连接密码不符合规则，只能为6-16位长度，包含数字大小写字母-._@#$"
-        return json(res)
+        raise BadRequest('SS连接密码不符合规则，只能为6-16位长度，包含数字大小写字母-._@#$')
 
     if method not in dict(METHOD_CHOICES):
-        res['msg'] = '加密方法错误'
-        return json(res)
+        raise BadRequest('加密方法错误')
 
     if protocol not in dict(PROTOCOL_CHOICES):
-        res['msg'] = '协议错误'
-        return json(res)
+        raise BadRequest('协议错误')
 
     if obfs not in dict(OBFS_CHOICES):
-        res['msg'] = '混淆错误'
-        return json(res)
+        raise BadRequest('混淆错误')
 
     user = request['user']
     user.passwd = sspwd
@@ -251,5 +244,4 @@ async def ssr_edit(request):
     user.obfs = obfs
     await User.objects.update(user)
 
-    res['ret'] = 1
-    return json(res)
+    return json({})

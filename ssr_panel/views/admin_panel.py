@@ -6,6 +6,7 @@ from peewee import fn
 from python_paginate.web.sanic_paginate import Pagination
 from utils import tools
 from utils.decorators import admin_required
+from ssr_panel.exceptions import BadRequest
 from ssr_panel import render
 from ssr_panel.models import User, SS_Node, SP_Config
 
@@ -49,26 +50,44 @@ class ConfigView(HTTPMethodView):
             config.value = request.form.get(key, '')
             await SP_Config.objects.update(config)
 
-        res = {'ret': 1, 'msg': '更新成功'}
-        return json(res)
+        return json({'msg': '更新成功'})
 
 admin_panel.add_route(ConfigView.as_view(), '/config')
 
 
-@admin_panel.route('/nodes')
-@admin_required
-async def nodes_view(request):
-    user = request['user']
-    nodes = await SS_Node.objects.execute(SS_Node.select())
-    return render('admin_panel/node/index.html', request, user=user, nodes=nodes)
+class NodeView(HTTPMethodView):
+    decorators = [admin_required]
 
+    async def get(self, request):
+        user = request['user']
+        nodes = await SS_Node.objects.execute(SS_Node.select())
+        return render('admin_panel/node/index.html', request, user=user, nodes=nodes)
 
-@admin_panel.route('/nodes/create')
-@admin_required
-async def nodes_create_view(request):
-    user = request['user']
-    nodes = await SS_Node.objects.execute(SS_Node.select())
-    return render('admin_panel/node/create.html', request, user=user, nodes=nodes)
+    async def post(self, request):
+        if not request.form.get('name'):
+            raise BadRequest('请输入节点名称')
+        if not request.form.get('server'):
+            raise BadRequest('节点地址错误')
+        if not request.form.get('traffic_rate'):
+            raise BadRequest('流量比例错误')
+
+        await SS_Node.objects.create(
+            SS_Node,
+            name=request.form.get('name'),
+            type=request.form.get('type'),
+            server=request.form.get('server'),
+            node_class=request.form.get('node_class'),
+            node_group=request.form.get('node_group'),
+            traffic_rate=request.form.get('traffic_rate'),
+            info=request.form.get('info'),
+            note=request.form.get('note'),
+            status=request.form.get('status'),
+            offset=request.form.get('offset'),
+            sort=request.form.get('sort'),
+        )
+        return json({'msg': '节点添加成功'})
+
+admin_panel.add_route(NodeView.as_view(), '/nodes')
 
 
 @admin_panel.route('/nodes/<node_id:int>')
@@ -113,17 +132,14 @@ class UserView(HTTPMethodView):
         password = request.form.get('pass')
         sspwd = request.form.get('passwd')
         pattern = r'^[\w\-\.@#$]{6,16}$'
-        res = {'ret': 0}
 
         if sspwd and not re.match(pattern, sspwd):
-            res['msg'] = 'SS连接密码不符合规则，只能为6-16位长度，包含数字大小写字母-._@#$'
-            return json(res)
+            raise BadRequest('SS连接密码不符合规则，只能为6-16位长度，包含数字大小写字母-._@#$')
 
         try:
             transfer_enable = tools.gb_to_byte(float(request.form.get('transfer_enable', 0)))
         except:
-            res['msg'] = '总流量输入错误'
-            return json(res)
+            raise BadRequest('总流量输入错误')
 
         user_detail = await User.objects.get(User.id == user_id)
         user_detail.email = request.form.get('email', user_detail.email)
@@ -145,7 +161,6 @@ class UserView(HTTPMethodView):
         user_detail.ref_by = request.form.get('ref_by', user_detail.ref_by)
         await User.objects.update(user_detail)
 
-        res = {'ret': 1, 'msg': '更新成功'}
-        return json(res)
+        return json({'msg': '更新成功'})
 
 admin_panel.add_route(UserView.as_view(), '/users/<user_id:int>')

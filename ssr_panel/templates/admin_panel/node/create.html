@@ -8,9 +8,9 @@
         <h1>
             添加节点
             <small>Add Node</small>
-            <small>
-                <small>(如需修改加密方式、协议及混淆插件，请至用户管理界面修改)</small>
-            </small>
+{#            <small>#}
+{#                <small>(如需修改加密方式、协议及混淆插件，请至用户管理界面修改)</small>#}
+{#            </small>#}
         </h1>
     </section>
 
@@ -57,88 +57,88 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="protocol" class="col-sm-3 control-label">默认协议</label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" id="protocol" onchange="disprotocolparam();" disabled="disabled">
-                                                <option value="origin" selected="selected">origin</option>
-                                                <!--<option value="verify_simple">verify_simple</option>-->
-                                                <option value="verify_deflate">verify_deflate</option>
-                                                <!--<option value="verify_sha1">verify_sha1</option>-->
-                                                <!--<option value="auth_sha1">auth_sha1</option>-->
-                                                <!--<option value="auth_sha1_compatible">auth_sha1_compatible</option>-->
-                                                <!--<option value="auth_sha1_v2">auth_sha1_v2</option>-->
-                                                <!--<option value="auth_sha1_v2_compatible">auth_sha1_v2_compatible</option>-->
-                                                <option value="auth_sha1_v4">auth_sha1_v4</option>
-                                                <option value="auth_sha1_v4_compatible">auth_sha1_v4_compatible</option>
-                                                <!--<option value="auth_aes128">auth_aes128</option>-->
-                                                <!--<option value="auth_sha1_md5">auth_sha1_md5</option>-->
-                                                <!--<option value="auth_sha1_md5_compatible">auth_sha1_md5_compatible</option>-->
-                                                <option value="auth_aes128_md5">auth_aes128_md5</option>
-                                                <option value="auth_aes128_sha1">auth_aes128_sha1</option>
-                                                <option value="auth_aes128_sha1_compatible">auth_aes128_sha1_compatible</option>
-                                                <option value="auth_chain_a">auth_chain_a</option>
-                                            </select>
-                                        </div>
-                                    </div>
+{#                                    <div class="form-group">#}
+{#                                        <label for="protocol" class="col-sm-3 control-label">默认协议</label>#}
+{#                                        <div class="col-sm-9">#}
+{#                                            <select class="form-control" id="protocol" onchange="disprotocolparam();" disabled="disabled">#}
+{#                                                <option value="origin" selected="selected">origin</option>#}
+{#                                                <!--<option value="verify_simple">verify_simple</option>-->#}
+{#                                                <option value="verify_deflate">verify_deflate</option>#}
+{#                                                <!--<option value="verify_sha1">verify_sha1</option>-->#}
+{#                                                <!--<option value="auth_sha1">auth_sha1</option>-->#}
+{#                                                <!--<option value="auth_sha1_compatible">auth_sha1_compatible</option>-->#}
+{#                                                <!--<option value="auth_sha1_v2">auth_sha1_v2</option>-->#}
+{#                                                <!--<option value="auth_sha1_v2_compatible">auth_sha1_v2_compatible</option>-->#}
+{#                                                <option value="auth_sha1_v4">auth_sha1_v4</option>#}
+{#                                                <option value="auth_sha1_v4_compatible">auth_sha1_v4_compatible</option>#}
+{#                                                <!--<option value="auth_aes128">auth_aes128</option>-->#}
+{#                                                <!--<option value="auth_sha1_md5">auth_sha1_md5</option>-->#}
+{#                                                <!--<option value="auth_sha1_md5_compatible">auth_sha1_md5_compatible</option>-->#}
+{#                                                <option value="auth_aes128_md5">auth_aes128_md5</option>#}
+{#                                                <option value="auth_aes128_sha1">auth_aes128_sha1</option>#}
+{#                                                <option value="auth_aes128_sha1_compatible">auth_aes128_sha1_compatible</option>#}
+{#                                                <option value="auth_chain_a">auth_chain_a</option>#}
+{#                                            </select>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{##}
+{#                                    <div class="form-group">#}
+{#                                        <label class="col-sm-3 control-label" for="protocol_param">协议参数</label>#}
+{#                                        <div class="col-sm-9">#}
+{#                                            <input class="form-control" id="protocol_param" type="text" value="" disabled="disabled">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{##}
+{#                                    <div class="form-group">#}
+{#                                        <label for="obfs" class="col-sm-3 control-label">默认混淆方式</label>#}
+{#                                        <div class="col-sm-9">#}
+{#                                            <select class="form-control" id="obfs" onchange="disobfsparam();" disabled="disabled">#}
+{#                                                <option value="plain" selected="selected">plain</option>#}
+{#                                                <option value="http_post">http_post</option>#}
+{#                                                <option value="http_post_compatible">http_post_compatible</option>#}
+{#                                                <option value="http_simple">http_simple</option>#}
+{#                                                <option value="http_simple_compatible">http_simple_compatible</option>#}
+{#                                                <option value="random_head">random_head</option>#}
+{#                                                <option value="tls1.2_ticket_auth">tls1.2_ticket_auth</option>#}
+{#                                                <option value="tls1.2_ticket_auth_compatible">tls1.2_ticket_auth_compatible</option>#}
+{#                                            </select>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="form-group">#}
+{#                                        <label class="col-sm-3 control-label" for="obfs_param">默认混淆参数</label>#}
+{#                                        <div class="col-sm-9">#}
+{#                                            <input class="form-control" id="obfs_param" type="text" value="" readonly="readonly">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{##}
+{#                                    <div class="form-group">#}
+{#                                        <label for="method" class="col-sm-3 control-label">默认加密方法</label>#}
+{#                                        <div class="col-sm-9">#}
+{#                                            <select class="form-control" id="method" disabled="disabled">#}
+{#                                                <option value="none">none</option>														<option value="table">table</option>#}
+{#                                                <option value="aes-128-cfb">aes-128-cfb</option>#}
+{#                                                <option value="aes-192-cfb">aes-192-cfb</option>#}
+{#                                                <option value="aes-256-cfb" selected="selected">aes-256-cfb</option>#}
+{#                                                <option value="aes-128-ctr">aes-128-ctr</option>#}
+{#                                                <option value="aes-192-ctr">aes-192-ctr</option>#}
+{#                                                <option value="aes-256-ctr">aes-256-ctr</option>#}
+{#                                                <option value="bf-cfb">bf-cfb</option>#}
+{#                                                <option value="camellia-128-cfb">camellia-128-cfb</option>#}
+{#                                                <option value="camellia-192-cfb">camellia-192-cfb</option>#}
+{#                                                <option value="camellia-256-cfb">camellia-256-cfb</option>#}
+{#                                                <option value="rc4-md5">rc4-md5</option>#}
+{#                                                <option value="rc4-md5-6">rc4-md5-6</option>#}
+{#                                                <option value="salsa20">salsa20</option>#}
+{#                                                <option value="chacha20">chacha20</option>#}
+{#                                                <option value="chacha20-ietf">chacha20-ietf</option>#}
+{#                                            </select>#}
+{#                                        </div>#}
+{#                                    </div>#}
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="protocol_param">协议参数</label>
+                                        <label for="traffic_rate" class="col-sm-3 control-label">流量比例</label>
                                         <div class="col-sm-9">
-                                            <input class="form-control" id="protocol_param" type="text" value="" disabled="disabled">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="obfs" class="col-sm-3 control-label">默认混淆方式</label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" id="obfs" onchange="disobfsparam();" disabled="disabled">
-                                                <option value="plain" selected="selected">plain</option>
-                                                <option value="http_post">http_post</option>
-                                                <option value="http_post_compatible">http_post_compatible</option>
-                                                <option value="http_simple">http_simple</option>
-                                                <option value="http_simple_compatible">http_simple_compatible</option>
-                                                <option value="random_head">random_head</option>
-                                                <option value="tls1.2_ticket_auth">tls1.2_ticket_auth</option>
-                                                <option value="tls1.2_ticket_auth_compatible">tls1.2_ticket_auth_compatible</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--<div class="form-group">
-                                        <label class="col-sm-3 control-label" for="obfs_param">默认混淆参数</label>
-                                        <div class="col-sm-9">
-                                            <input class="form-control" id="obfs_param" type="text" value="" readonly="readonly">
-                                        </div>
-                                    </div>-->
-
-                                    <div class="form-group">
-                                        <label for="method" class="col-sm-3 control-label">默认加密方法</label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" id="method" disabled="disabled">
-                                                <option value="none">none</option>														<option value="table">table</option>
-                                                <option value="aes-128-cfb">aes-128-cfb</option>
-                                                <option value="aes-192-cfb">aes-192-cfb</option>
-                                                <option value="aes-256-cfb" selected="selected">aes-256-cfb</option>
-                                                <option value="aes-128-ctr">aes-128-ctr</option>
-                                                <option value="aes-192-ctr">aes-192-ctr</option>
-                                                <option value="aes-256-ctr">aes-256-ctr</option>
-                                                <option value="bf-cfb">bf-cfb</option>
-                                                <option value="camellia-128-cfb">camellia-128-cfb</option>
-                                                <option value="camellia-192-cfb">camellia-192-cfb</option>
-                                                <option value="camellia-256-cfb">camellia-256-cfb</option>
-                                                <option value="rc4-md5">rc4-md5</option>
-                                                <option value="rc4-md5-6">rc4-md5-6</option>
-                                                <option value="salsa20">salsa20</option>
-                                                <option value="chacha20">chacha20</option>
-                                                <option value="chacha20-ietf">chacha20-ietf</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="rate" class="col-sm-3 control-label">流量比例</label>
-                                        <div class="col-sm-9">
-                                            <input class="form-control" id="rate" value="1">
+                                            <input class="form-control" id="traffic_rate" value="1">
                                         </div>
                                     </div>
 
@@ -162,26 +162,6 @@
                                             </div>
                                         </div>-->
 
-                                </fieldset>
-                                <fieldset class="col-sm-6">
-                                    <legend>描述信息</legend>
-
-                                    <div class="form-group">
-                                        <label for="node_class" class="col-sm-3 control-label">节点等级</label>
-                                        <div class="col-sm-9">
-                                            <input class="form-control" id="node_class" type="number" value=""
-                                                   placeholder="分类为数字，不分类请填0">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="node_group" class="col-sm-3 control-label">节点群组</label>
-                                        <div class="col-sm-9">
-                                            <input class="form-control" id="node_group" type="number" value=""
-                                                   placeholder="分组为数字，不分组请填0">
-                                        </div>
-                                    </div>
-
                                     <div class="form-group">
                                         <label for="type" class="col-sm-3 control-label">是否显示</label>
                                         <div class="col-sm-9">
@@ -199,6 +179,26 @@
                                                 <option value="1">可用</option>
                                                 <option value="0">不可用</option>
                                             </select>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                                <fieldset class="col-sm-6">
+                                    <legend>描述信息</legend>
+
+                                    <div class="form-group">
+                                        <label for="node_class" class="col-sm-3 control-label">节点等级</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="node_class" type="number" value=""
+                                                   placeholder="分类为数字，不分类请填0">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="node_group" class="col-sm-3 control-label">节点群组</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" id="node_group" type="number" value=""
+                                                   placeholder="分组为数字，不分组请填0">
                                         </div>
                                     </div>
 
@@ -246,7 +246,7 @@
         function submit() {
             $.ajax({
                 type: "POST",
-                url: "/admin/node",
+                url: "/admin/nodes",
                 dataType: "json",
                 data: {
                     name: $("#name").val(),
@@ -260,7 +260,7 @@
                      custom_rss: $("#custom_rss").val(),*/
                     node_class: $("#node_class").val(),
                     node_group: $("#node_group").val(),
-                    rate: $("#rate").val(),
+                    traffic_rate: $("#traffic_rate").val(),
                     info: $("#info").val(),
                     note: $("#note").val(),
                     type: $("#type").val(),
@@ -268,22 +268,15 @@
                     sort: $("#sort").val()
                 },
                 success: function (data) {
-                    if (data.ret) {
-                        $("#msg-error").hide(100);
-                        $("#msg-success").show(100);
-                        $("#msg-success-p").html(data.msg);
-                        window.setTimeout("location.href='/admin/node'", 2000);
-                    } else {
-                        $("#msg-error").hide(10);
-                        $("#msg-error").show(100);
-                        $("#msg-error-p").html(data.msg);
-                    }
+                    $("#msg-error").hide(100);
+                    $("#msg-success").show(100);
+                    $("#msg-success-p").html(data.msg);
+                    window.setTimeout("location.href='/admin/nodes'", 2000);
                 },
                 error: function (jqXHR) {
-                    $("#msg-error").hide(10);
+                    $("#msg-success").hide(10);
                     $("#msg-error").show(100);
-                    $("#msg-error-p").html("发生错误：" + jqXHR.status);
-
+                    $("#msg-error-p").html(jqXHR.responseJSON.msg || '未知错误');
                 }
             });
         }

@@ -13,36 +13,38 @@
 
     <!-- Main content -->
     <section class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="callout callout-warning">
-                    <h4>注意!</h4>
-                    <p>部分节点不支持流量记录.</p>
-                </div>
-            </div>
-        </div>
+{#        <div class="row">#}
+{#            <div class="col-md-12">#}
+{#                <div class="callout callout-warning">#}
+{#                    <h4>注意!</h4>#}
+{#                    <p>部分节点不支持流量记录.</p>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-body table-responsive no-padding">
-                        {{ pagination.links }}
+{#                        {{ pagination.links }}#}
                         <table class="table table-hover">
                             <tr>
-                                <th>ID</th>
-                                <th>使用节点</th>
+{#                                <th>ID</th>#}
+                                <th>使用时间</th>
+                                <th>节点地址</th>
+                                <th>节点名称</th>
                                 <th>倍率</th>
                                 <th>实际使用流量</th>
                                 <th>结算流量</th>
-                                <th>记录时间</th>
                             </tr>
                             {% for log in traffic_logs %}
                                 <tr>
-                                    <td>#{{ log.id }}</td>
+{#                                    <td>{{ log.id }}</td>#}
+                                    <td>{{ log.log_datetime }}</td>
+                                    <td>{{ log.node.server }}</td>
                                     <td>{{ log.node.name }}</td>
                                     <td>{{ log.rate }}</td>
                                     <td>{{ log.total_used }}</td>
                                     <td>{{ log.traffic }}</td>
-                                    <td>{{ log.log_datetime }}</td>
                                 </tr>
                             {% endfor %}
                         </table>
