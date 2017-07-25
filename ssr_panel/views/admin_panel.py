@@ -84,14 +84,14 @@ class NodeView(HTTPMethodView):
             name=request.form.get('name'),
             type=request.form.get('type'),
             server=request.form.get('server'),
-            node_class=request.form.get('node_class'),
-            node_group=request.form.get('node_group'),
+            node_class=request.form.get('node_class', 0),
+            node_group=request.form.get('node_group', 0),
             traffic_rate=request.form.get('traffic_rate'),
-            info=request.form.get('info'),
-            note=request.form.get('note'),
+            info=request.form.get('info', ''),
+            note=request.form.get('note', ''),
             status=request.form.get('status'),
-            offset=request.form.get('offset'),
-            sort=request.form.get('sort'),
+            offset=request.form.get('offset', 0),
+            sort=request.form.get('sort', 0),
         )
         return json({'msg': '节点添加成功'})
 
